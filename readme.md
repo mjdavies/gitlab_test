@@ -10,17 +10,21 @@ The new gitlab system needs to have all the data and files of the current single
 
 Open up terminal
 
-   git clone git@github.com:mjdavies/gitlab_test.git
-   cd gitlab_test
-   docker swarm init
-   docker stack deploy -c single-stack.yml git
+~~~~
+git clone git@github.com:mjdavies/gitlab_test.git
+cd gitlab_test
+docker swarm init
+docker stack deploy -c single-stack.yml git
+~~~~
 
 Wait a couple of minutes, you should now have a running gitlab instance.  Go and create a password, a project, and a wiki page at http://localhost/
 
 Stop and remove the stack, and start it again with the multi-stack.yml file
 
-   docker stack rm git
-   docker stack deploy -c multi-stack.yml git
+~~~
+docker stack rm git
+docker stack deploy -c multi-stack.yml git
+~~~
 
 Wait a couple of minutes, you should now have a running gitlab instance. Browse to http://localhost
 
