@@ -1,0 +1,71 @@
+
+version: "3.6"
+
+services:  
+  git:
+    image: "gitlab/gitlab-ce:11.4.0-ce.0"
+    deploy:
+      replicas: 1
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        postgresql['enable'] = false
+        gitlab_rails['db_username'] = "gitlab"
+        gitlab_rails['db_password'] = "gitlab"
+        gitlab_rails['db_host'] = "postgresql"
+        gitlab_rails['db_port'] = "5432"
+        gitlab_rails['db_database'] = "gitlabhq_production"
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'utf8'
+        redis['enable'] = false
+        gitlab_rails['redis_host'] = 'redis'
+        gitlab_rails['redis_port'] = '6379'
+    hostname: git
+    ports:
+      - "80:80"
+      - "2222:22"
+    volumes:
+      - ./git/config:/etc/gitlab
+      - ./git/logs:/var/log/gitlab
+      - ./git/data:/var/opt/gitlab
+    networks:
+      - tooling
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "1"
+  
+  postgresql:
+    image: postgres:9.6.2-alpine
+    deploy:
+      replicas: 1
+    environment:
+      - POSTGRES_USER=gitlab
+      - POSTGRES_PASSWORD=gitlab
+      - POSTGRES_DB=gitlabhq_production
+    volumes:
+      - ./git/data/postgresql:/var/lib/postgresql:rw
+    networks:
+      - tooling
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "1"
+
+
+  redis:
+    image: redis:3.0.7-alpine
+    deploy:
+      replicas: 1
+    networks:
+      - tooling
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "1"
+
+networks:
+  tooling:
+    external: true

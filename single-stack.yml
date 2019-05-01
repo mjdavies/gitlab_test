@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:  
+  git:
+    image: "gitlab/gitlab-ce:11.4.0-ce.0"
+    deploy:
+      replicas: 1
+    hostname: git
+    ports:
+      - "80:80"
+      - "2222:22"
+      - "5432:5432"
+    volumes:
+      - ./git/config:/etc/gitlab
+      - ./git/logs:/var/log/gitlab
+      - ./git/data:/var/opt/gitlab
+    networks:
+      - tooling
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "1"
+
+networks:
+  tooling:
+    external: true
+
+
