@@ -28,7 +28,9 @@ docker stack deploy -c multi-stack.yml git
 
 Wait a couple of minutes, you should now have a running gitlab instance. Browse to http://localhost
 
-I would expect at this point to be looking at the same database that we setup in the single-stack system, as we're pointing at the same postgresql folder on the local filesystem, but I don't see that, I see a blank database, and need to create it all again.
+I would expect at this point to be looking at the same database that we setup in the single-stack system, as we're pointing at the same postgresql folder on the local filesystem, but I don't see tha.
+
+Sometimes I see a blank database, and need to create it all again. Sometimes I get erros from the system saying that the tables don't exist.
 
 Can anyone see what I'm doing wrong with the volume mounts? Or is this not possible and I need to do this in a different way, maybe export the database from the single container first, then import it?
 
